@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Product-Level Analysis</h1>
+    <p>Authenticity percentage and average score are calculated for each product.</p>
+</div>
+
+{% if products %}
+<div class="product-grid">
+    {% for product in products %}
+    <div class="product-card">
+        <h2>Product: {{ product.product_id }}</h2>
+        <div class="product-row">
+            <span>Total Feedbacks</span>
+            <strong>{{ product.total_feedbacks }}</strong>
+        </div>
+        <div class="product-row">
+            <span>Genuine</span>
+            <strong>{{ product.genuine_feedbacks }}</strong>
+        </div>
+        <div class="product-row">
+            <span>Suspicious</span>
+            <strong>{{ product.suspicious_feedbacks }}</strong>
+        </div>
+        <div class="product-row">
+            <span>Fake</span>
+            <strong>{{ product.fake_feedbacks }}</strong>
+        </div>
+        <div class="product-row">
+            <span>Average Score</span>
+            <strong>{{ product.average_score }}</strong>
+        </div>
+        <div class="product-row">
+            <span>Authenticity %</span>
+            <strong>{{ product.authenticity_percentage }}%</strong>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress-fill" style="width: {{ product.authenticity_percentage }}%;"></div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="empty-card">
+    <h3>No product data available.</h3>
+    <p>Add feedback records first to view product analysis.</p>
+</div>
+{% endif %}
+{% endblock %}
