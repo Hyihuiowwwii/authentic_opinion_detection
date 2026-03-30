@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="page-header">
+    <h1>All Feedbacks</h1>
+    <p>Sorted by score in descending order. Higher score means more reliable feedback.</p>
+</div>
+
+{% if feedbacks %}
+<div class="table-wrapper">
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>User ID</th>
+                <th>Product ID</th>
+                <th>Feedback</th>
+                <th>Score</th>
+                <th>Class</th>
+                <th>Signal</th>
+                <th>Issues</th>
+                <th>Created At</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for fb in feedbacks %}
+            <tr>
+                <td>{{ fb.id }}</td>
+                <td>{{ fb.user_id }}</td>
+                <td>{{ fb.product_id }}</td>
+                <td class="feedback-text">{{ fb.original_text }}</td>
+                <td>
+                    <span class="score-badge">{{ fb.score }}</span>
+                </td>
+                <td>
+                    {% if fb.classification == "Genuine" %}
+                        <span class="badge genuine-badge">Genuine</span>
+                    {% elif fb.classification == "Suspicious" %}
+                        <span class="badge suspicious-badge">Suspicious</span>
+                    {% else %}
+                        <span class="badge fake-badge">Fake</span>
+                    {% endif %}
+                </td>
+                <td>{{ fb.signal_strength }}</td>
+                <td>
+                    {% if fb.issues %}
+                        <ul class="issue-list">
+                            {% for issue in fb.issues %}
+                                <li>{{ issue }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <span class="clean-status">No issues</span>
+                    {% endif %}
+                </td>
+                <td>{{ fb.created_at }}</td>
+                <td>
+                    <form action="{{ url_for('delete_feedback', feedback_id=fb.id) }}" method="POST">
+                        <button type="submit" class="btn-delete">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<div class="empty-card">
+    <h3>No feedback records found.</h3>
+    <p>Go to Home page and add feedback first.</p>
+</div>
+{% endif %}
+{% endblock %}
