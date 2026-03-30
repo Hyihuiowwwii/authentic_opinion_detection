@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="hero">
+    <div class="hero-left">
+        <h1>Detect Fake, Suspicious and Genuine Reviews</h1>
+        <p>
+            This system analyzes user feedback using duplicate detection,
+            similarity analysis, repetition checking and user behavior tracking.
+        </p>
+    </div>
+    <div class="hero-right">
+        <div class="hero-badge">DAA Project</div>
+    </div>
+</div>
+
+<div class="stats-grid">
+    <div class="stat-card">
+        <h3>Total Feedbacks</h3>
+        <p>{{ total_reviews }}</p>
+    </div>
+    <div class="stat-card genuine">
+        <h3>Genuine</h3>
+        <p>{{ genuine_count }}</p>
+    </div>
+    <div class="stat-card suspicious">
+        <h3>Suspicious</h3>
+        <p>{{ suspicious_count }}</p>
+    </div>
+    <div class="stat-card fake">
+        <h3>Fake</h3>
+        <p>{{ fake_count }}</p>
+    </div>
+    <div class="stat-card">
+        <h3>Average Score</h3>
+        <p>{{ avg_score }}</p>
+    </div>
+</div>
+
+<div class="form-card">
+    <h2>Submit New Feedback</h2>
+    <form action="{{ url_for('submit_feedback') }}" method="POST">
+        <div class="form-group">
+            <label>User ID</label>
+            <input type="text" name="user_id" placeholder="Enter user ID" required>
+        </div>
+
+        <div class="form-group">
+            <label>Product ID</label>
+            <input type="text" name="product_id" placeholder="Enter product ID" required>
+        </div>
+
+        <div class="form-group">
+            <label>Feedback Text</label>
+            <textarea name="feedback_text" rows="6" placeholder="Write product feedback..." required></textarea>
+        </div>
+
+        <button type="submit" class="btn-primary">Analyze Feedback</button>
+    </form>
+</div>
+
+<div class="info-grid">
+    <div class="info-card">
+        <h3>Scoring Rules</h3>
+        <ul>
+            <li>Base Score = 100</li>
+            <li>Duplicate review reduces score</li>
+            <li>High similarity reduces score</li>
+            <li>Word repetition reduces score</li>
+            <li>Suspicious user behavior reduces score</li>
+        </ul>
+    </div>
+
+    <div class="info-card">
+        <h3>Classification</h3>
+        <ul>
+            <li><strong>Score ≥ 75</strong> → Genuine</li>
+            <li><strong>40 to 74</strong> → Suspicious</li>
+            <li><strong>Score &lt; 40</strong> → Fake</li>
+        </ul>
+    </div>
+</div>
+
+<div class="danger-zone">
+    <h3>Danger Zone</h3>
+    <form action="{{ url_for('reset_database') }}" method="POST">
+        <button type="submit" class="btn-danger">Delete All Feedback Records</button>
+    </form>
+</div>
+{% endblock %}
